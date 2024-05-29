@@ -86,10 +86,14 @@ const show = (req, res) => {
 
 }
 
+const admin = (req, res) => {
+    res.send(`Welcome ${req.user.username} you're an Admin and thats cool!`);
+}
 
 
 module.exports = {
     index,
     store,
     show,
+    admin
 }

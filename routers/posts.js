@@ -12,7 +12,12 @@ router.get('/', posts.index);
 //store route
 router.post('/', auth.authCheck, uploader.single("image"),  posts.store);
 
+router.get('/adminPage', auth.authCheck, auth.isAdmin, posts.admin);
+
+
 //show route
 router.get('/:slug', posts.show);
+
+
 
 module.exports = router;

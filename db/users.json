@@ -2,7 +2,8 @@
   {
     "id": 1,
     "username": "mario.rossi",
-    "password": "password"
+    "password": "password",
+    "admin": true
   },
   {
     "id": 2,
@@ -12,7 +13,8 @@
   {
     "id": 3,
     "username": "anna.bianchi",
-    "password": "password"
+    "password": "password",
+    "admin": true
   },
   {
     "id": 4,

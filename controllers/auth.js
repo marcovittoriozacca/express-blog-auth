@@ -50,13 +50,27 @@ const authCheck = (req, res, next) => {
                 }
             })
         }else{
+            const {id, username, admin}= users.find(u => u.username === user.username && u.password === user.password);
+            req.user = {id,username,admin};
             next();
         }
     })
     
 }
 
+const isAdmin = (req, res, next) => {
+    const {admin} = req.user;
+
+    if(!admin){
+        return res.status(401).send('This user is not an Admin');
+    }
+    next();
+
+}
+
+
 module.exports = {
     login,
     authCheck,
+    isAdmin
 }
