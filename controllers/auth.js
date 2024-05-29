@@ -49,8 +49,9 @@ const authCheck = (req, res, next) => {
                     return res.status(400).send(`The token expired at ${err.expiredAt}`);
                 }
             })
+        }else{
+            next();
         }
-        next();
     })
     
 }
