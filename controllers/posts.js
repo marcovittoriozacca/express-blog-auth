@@ -69,9 +69,27 @@ const store = (req, res) => {
     }
 }
 
+const show = (req, res) => {
+    const {slug} = req.params;
+    const elementToDisplay = postsList.find(e => e.slug === slug);
+
+    if(!elementToDisplay){
+        return res.status(404).send('Element Not Found')
+    }
+    const {title,content,image,tags} = elementToDisplay;
+    res.send(`
+                <h1>${title}</h1>
+                <p>${content}</p>
+                <img src="/imgs/posts/${image}">
+                <br>${tags.map(t => `<span>${t}<span>`).join(" - ")}
+            `)
+
+}
+
 
 
 module.exports = {
     index,
     store,
+    show,
 }
