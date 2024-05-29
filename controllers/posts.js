@@ -27,7 +27,18 @@ const index = (req, res) => {
 
 const store = (req, res) => {
     const {title, content, tags} = req.body;
-    if(!title || !content || !tags || !req.file){
+
+    if(!req.file){
+       return  res.format({
+            json: () => res.status(400).send({
+                            success: false,
+                            error: "One or more information are missing"
+                        }),
+            html: () => {res.status(400).send("<h1>One or more information are missing</h1>")}
+        })
+    }
+
+    if(!title || title.trim().replaceAll("/", "").length == 0 || !content || !tags || tags.length == 0){
 
         const filePath = path.join(__dirname, '..', 'public', 'imgs', 'posts', `${req.file.filename}`);
         fs.unlinkSync(filePath);
@@ -73,16 +84,23 @@ const show = (req, res) => {
     const {slug} = req.params;
     const elementToDisplay = postsList.find(e => e.slug === slug);
 
-    if(!elementToDisplay){
-        return res.status(404).send('Element Not Found')
-    }
-    const {title,content,image,tags} = elementToDisplay;
-    res.send(`
-                <h1>${title}</h1>
-                <p>${content}</p>
-                <img src="/imgs/posts/${image}">
-                <br>${tags.map(t => `<span>${t}<span>`).join(" - ")}
-            `)
+    res.format({
+        html: () => {
+            if(!elementToDisplay){
+                return res.status(404).send('Element Not Found')
+            }
+            
+            const {title,content,image,tags} = elementToDisplay;
+            res.send(`
+                        <h1>${title}</h1>
+                        <p>${content}</p>
+                        <img src="/imgs/posts/${image}">
+                        <br>${tags.map(t => `<span>${t}<span>`).join(" - ")}
+                    `)
+        },
+        json: () => res.json(elementToDisplay)
+    })
+
 
 }
 
