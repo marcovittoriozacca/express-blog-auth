@@ -98,14 +98,27 @@ const show = (req, res) => {
                         <br>${tags.map(t => `<span>${t}<span>`).join(" - ")}
                     `)
         },
-        json: () => res.json(elementToDisplay)
+        json: () => {
+            if(!elementToDisplay){
+                return res.status(404).json({error: "Element not found"});
+            }
+            res.json(elementToDisplay);
+        }
     })
 
 
 }
 
 const admin = (req, res) => {
-    res.send(`Welcome ${req.user.username} you're an Admin and thats cool!`);
+    res.format({
+        html: () => {
+            res.send(`Welcome ${req.user.username} you're an Admin and thats cool!`);
+        },
+        json: () => {
+            res.json({success: true, message:`Welcome ${req.user.username} you're an Admin and thats cool!`})
+        }
+
+    })
 }
 
 
